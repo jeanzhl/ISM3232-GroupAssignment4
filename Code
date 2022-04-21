@@ -1,0 +1,101 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace GroupProject4
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // declare a string list to capture all votes
+            List<string> totalVotes = new List<string>();
+
+            // declare a dictionary to capture votes for each candidate
+            Dictionary<string, int> candidateVotes = new Dictionary<string, int>();
+
+            // declare a string initialized with a blank value
+            string input = "";
+
+            // begin while loop when input is not ***
+            while (input != "***")
+            {
+                // add readline to input
+                input = Console.ReadLine();
+
+                // add readline name to totalVotes list
+                totalVotes.Add(input);
+            }
+
+            // remove list item *** from list. We found this was still counted with totalVotes.count
+            totalVotes.Remove("***");
+
+            // declare an integer to count the votes
+            int VoteCount = totalVotes.Count;
+
+            /* KATTIS DOESN'T LIKE OUR IF ELSE STATEMENT AND FAILS IF WE USE IT
+            // set restriction for the program to only run with 2 or more and less than 100000 votes
+            if (VoteCount > 2 && VoteCount < 100000)
+            {
+            */
+                // begin loop to process each candidate name from the totalVotes list
+                foreach (string candidateName in totalVotes)
+                {
+                    // set restriction for the program only if the candidate name is in the dictionary
+                    if (candidateVotes.ContainsKey(candidateName))
+
+                        // add one vote as dictionary value to the key of candidateName
+                        candidateVotes[candidateName] = candidateVotes[candidateName] + 1;
+
+                    else
+                        // if above condition not met, add candidateName as key and 1 as value to dictionary
+                        candidateVotes.Add(candidateName, 1);
+
+                }
+                // declare new integer as voteMax to hold max value from dictionary
+                int voteMax = candidateVotes.Values.Max();
+
+                // declare new integer as countwinners intialized as zero
+                int countWinners = 0;
+
+                // declare new string initialized as blank
+                string winner = "";
+
+                // begin loop to process dictionary entries with variable name vote in dictionary candidateVotes
+                foreach (KeyValuePair<string, int> vote in candidateVotes)
+                {
+                    // set restriction if dictionary entry value matches variable voteMax
+                    if (vote.Value == voteMax)
+                    {
+                        // if above condition is met, add one to countWinners
+                        countWinners += 1;
+
+                        // also set winner string variable as dictionary pair key
+                        winner = vote.Key;
+                    }
+
+                    else
+                        // if above condition is NOT met then keep going
+                        continue;
+                }
+                // set restriction if countWinners matches 1
+                if (countWinners == 1)
+                {
+                    // if above condition is met, display winner string as in console
+                    Console.WriteLine(winner);
+                }
+                // display "Runoff!" in console if other than 1 count winner
+                else
+                    Console.WriteLine("Runoff!");
+
+            /* KATTIS DOESN'T LIKE OUR IF ELSE STATEMENT AND FAILS IF WE USE IT
+            }
+            else
+            {
+            // Invalid entry message if total votes are under 2 or equal to or more than 100,000
+            Console.WriteLine("Not enough, or too many votes!");
+            }
+            */
+        }
+    }
+}
